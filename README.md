@@ -16,6 +16,7 @@ Para iniciar o teste do projeto é necessário:
 ## Testes (Do que terminei)
 1. **GET** https://localhost:44328/api/estados
 2. **POST** https://localhost:44328/api/estados
+
 > ```
 	Content-Type application/json
 
@@ -25,8 +26,10 @@ Para iniciar o teste do projeto é necessário:
 		"Sigla": "SA"
 	}
 ```
+
 3. **GET** https://localhost:44328/api/estados/sa/cidades
 4. **POST** https://localhost:44328/api/estados/sa/cidades
+
 ```
 	Raw
 	{
@@ -35,6 +38,7 @@ Para iniciar o teste do projeto é necessário:
 		"IdEstado": 1
 	}
 ```
+
 5. **DELETE** https://localhost:44328/api/estados/sa/cidades/{idCidade}
 
 ## Distribuição
