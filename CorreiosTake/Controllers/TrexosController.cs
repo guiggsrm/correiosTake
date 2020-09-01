@@ -5,12 +5,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Contracts.Services;
 using CorreiosTake.Controllers.Base;
+using Entidades.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CorreiosTake.Controllers
 {
-    [Route("api/{siglaEstado}/[controller]/Upload")]
+    [Route("api/estados/{siglaEstado}/[controller]/Upload")]
     [ApiController]
     public class TrexosController : BaseController
     {
@@ -19,16 +20,16 @@ namespace CorreiosTake.Controllers
         [HttpPost, DisableRequestSizeLimit]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> UploadFileAsync(IFormFile file)
+        public async Task<IActionResult> UploadFileAsync(string siglaEstado, IFormFile file)
         {
             try
             {
-
-                return Ok();
+                var trexos = await ServiceWrapper.TrexoService.UploadAsync(siglaEstado, file);
+                return Ok(trexos);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return BadRequest();
+                return StatusCode(400, e.Message);
             }
         }
     }

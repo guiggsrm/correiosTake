@@ -10,6 +10,6 @@ namespace Contracts.Services
 {
     public interface ITrexoService : ITrexoRepository
     {
-        Task<IEnumerable<Trexo>> IncluirAsync(string siglaEstado, IFormFile file);
+        Task<IEnumerable<Trexo>> UploadAsync(string siglaEstado, IFormFile file);
     }
 }

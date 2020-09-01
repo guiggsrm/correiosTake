@@ -8,6 +8,7 @@ using Services.Base;
 using Services.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -80,12 +81,14 @@ namespace Services
             await RepositoryWrapper.TrexoRepository.SaveAsync(model);
         }
 
-        public async Task<IEnumerable<Trexo>> IncluirAsync(string siglaEstado, IFormFile file)
+        public async Task<IEnumerable<Trexo>> UploadAsync(string siglaEstado, IFormFile file)
         {
             IEnumerable<Trexo> trexosIncluidos = new List<Trexo>();
             try
             {
-                using (TransactionScope scope = new TransactionScope())
+                if (!file.FileName.Contains(".txt"))
+                    throw new Exception("Formato de arquivo inválido. Favor enviar um arquivo txt");
+                using (TransactionScope scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                 {
 
                     await DesativarTrexosAtuaisAsync();
@@ -103,6 +106,7 @@ namespace Services
             }
             catch (Exception e)
             {
+                Debug.WriteLine(e.Message);
                 throw;
             }
 
@@ -118,7 +122,7 @@ namespace Services
             var splitLinha = linha.Split(" ");
             Cidade cidadePartida = await RepositoryWrapper.CidadeRepository.ObterPorSiglaAsync(siglaEstado, splitLinha[0]);
             Cidade cidadeDestino = await RepositoryWrapper.CidadeRepository.ObterPorSiglaAsync(siglaEstado, splitLinha[1]);
-            int dias = int.Parse(splitLinha[1]);
+            int dias = int.Parse(splitLinha[2]);
             Trexo trexo = new Trexo(cidadePartida.Id, cidadeDestino.Id, dias);
             return trexo;
         }
